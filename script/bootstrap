@@ -66,6 +66,10 @@ if ! canexecute "wget"; then
     requires 'wget'
 fi
 
+if ! canexecute "shellcheck"; then
+    requires 'shellcheck'
+fi
+
 # download vanilla resources
 if [ ! -d "$PROJECT_PATH/resources" ]; then
     mkdir -p "$PROJECT_PATH/resources"
