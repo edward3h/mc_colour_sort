@@ -1,0 +1,9 @@
+{
+  "name": "mc_colour_sort",
+  "version": "1.0.0",
+  "description": "Organise Minecraft blocks by colour",
+  "main": "index.js",
+  "repository": "git@github.com:edward3h/mc_colour_sort.git",
+  "author": "jaq@ethelred.org",
+  "license": "GPL-3.0-or-later\t"
+}

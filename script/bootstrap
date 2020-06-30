@@ -1,6 +1,8 @@
 #!/bin/bash
 
 PROJECT_PATH=$(git rev-parse --show-toplevel)
+RESOURCES_URL="https://aka.ms/resourcepacktemplate"
+RESOURCE_FILE_VERSION="Vanilla_Resource_Pack_1.16.0.zip"
 
 # from https://gist.github.com/nicferrier/2277987
 clone_or_update() {
@@ -52,15 +54,34 @@ if ! canexecute "pre-commit"; then
     fi
 fi
 
-# template: uncomment or add dependencies if relevant
+if ! canexecute "node"; then
+    requires 'node'
+fi
 
-# if ! canexecute "node"; then
-#     requires 'node'
-# fi
+if ! canexecute "yarn"; then
+    requires 'yarn'
+fi
 
-# if ! canexecute "yarn"; then
-#     requires 'yarn'
-# fi
+if ! canexecute "wget"; then
+    requires 'wget'
+fi
+
+# download vanilla resources
+if [ ! -d "$PROJECT_PATH/resources" ]; then
+    mkdir -p "$PROJECT_PATH/resources"
+fi
+
+if [ ! -f "$PROJECT_PATH/resources/$RESOURCE_FILE_VERSION" ]; then
+    # in case of version update, remove old resource files
+    rm -r $PROJECT_PATH/resources/*
+
+    # download zip
+    cd "$PROJECT_PATH/resources" || exit 1
+    wget --content-disposition "$RESOURCES_URL" || exit 1
+
+    # unzip it
+    unzip *.zip
+fi
 
 # create .env file
 if [ ! -f "$PROJECT_PATH/.env" ] && [ -f "$PROJECT_PATH/env.sample" ]; then
@@ -75,3 +96,5 @@ if canexecute "pre-commit" && [ ! -e "$PROJECT_PATH/.git/pre-commit" ]; then
     echo
     echo "You might want to try 'pre-commit run --all-files' now"
 fi
+
+yarn install
