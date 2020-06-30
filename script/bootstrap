@@ -73,14 +73,14 @@ fi
 
 if [ ! -f "$PROJECT_PATH/resources/$RESOURCE_FILE_VERSION" ]; then
     # in case of version update, remove old resource files
-    rm -r $PROJECT_PATH/resources/*
+    rm -r "$PROJECT_PATH/resources/"*
 
     # download zip
     cd "$PROJECT_PATH/resources" || exit 1
     wget --content-disposition "$RESOURCES_URL" || exit 1
 
     # unzip it
-    unzip *.zip
+    unzip ./*.zip
 fi
 
 # create .env file
@@ -92,7 +92,7 @@ fi
 # install hooks
 if canexecute "pre-commit" && [ ! -e "$PROJECT_PATH/.git/pre-commit" ]; then
     cd "$PROJECT_PATH" || exit 1
-    pre-commit install || exit 1
+    pre-commit install --install-hooks || exit 1
     echo
     echo "You might want to try 'pre-commit run --all-files' now"
 fi

@@ -11,6 +11,7 @@ repos:
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-json
+        exclude: .devcontainer/devcontainer.json
       - id: check-merge-conflict
       - id: mixed-line-ending
 
@@ -40,18 +41,17 @@ repos:
     hooks:
       - id: shellcheck
         name: shellcheck
-        language: docker_image
-        entry: koalaman/shellcheck:stable
+        entry: shellcheck
+        language: system
         types: [shell]
         args: ["-C", "-x"]
         exclude: gradlew
-      - id: shfmt
-        name: shfmt
-        language: docker_image
-        entry: mvdan/shfmt
-        types: [shell]
-        args: ["-i", "4", "-ci", "-sr", "-w"]
-        exclude: gradlew
+      # - id: shfmt
+      #   name: shfmt
+      #   language: system
+      #   types: [shell]
+      #   args: ["-i", "4", "-ci", "-sr", "-w"]
+      #   exclude: gradlew
   # uncomment below to help debug pre-commit checks
   # - repo: meta
   #   hooks:
@@ -63,4 +63,4 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
-        exclude: .*/tests/.*
+        exclude: .*/tests/.*|.devcontainer/Dockerfile
