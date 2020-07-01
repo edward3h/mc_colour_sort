@@ -3,6 +3,8 @@
 PROJECT_PATH=$(git rev-parse --show-toplevel)
 RESOURCES_URL="https://aka.ms/resourcepacktemplate"
 RESOURCE_FILE_VERSION="Vanilla_Resource_Pack_1.16.0.zip"
+BEHAVIOUR_URL="https://aka.ms/behaviorpacktemplate"
+BEHAVIOUR_FILE_VERSION="Vanilla_Behavior_Pack_1.16.0.zip"
 
 # from https://gist.github.com/nicferrier/2277987
 clone_or_update() {
@@ -70,18 +72,37 @@ if ! canexecute "shellcheck"; then
     requires 'shellcheck'
 fi
 
+RESOURCES_DIR="$PROJECT_PATH/packs/resources"
 # download vanilla resources
-if [ ! -d "$PROJECT_PATH/resources" ]; then
-    mkdir -p "$PROJECT_PATH/resources"
+if [ ! -d "$RESOURCES_DIR" ]; then
+    mkdir -p "$RESOURCES_DIR"
 fi
 
-if [ ! -f "$PROJECT_PATH/resources/$RESOURCE_FILE_VERSION" ]; then
+if [ ! -f "$RESOURCES_DIR/$RESOURCE_FILE_VERSION" ]; then
     # in case of version update, remove old resource files
-    rm -r "$PROJECT_PATH/resources/"*
+    rm -r "${RESOURCES_DIR:?}"/*
 
     # download zip
-    cd "$PROJECT_PATH/resources" || exit 1
+    cd "$RESOURCES_DIR" || exit 1
     wget --content-disposition "$RESOURCES_URL" || exit 1
+
+    # unzip it
+    unzip ./*.zip
+fi
+
+BEHAVIOUR_DIR="$PROJECT_PATH/packs/behaviour"
+# download vanilla resources
+if [ ! -d "$BEHAVIOUR_DIR" ]; then
+    mkdir -p "$BEHAVIOUR_DIR"
+fi
+
+if [ ! -f "$BEHAVIOUR_DIR/$BEHAVIOUR_FILE_VERSION" ]; then
+    # in case of version update, remove old resource files
+    rm -r "${BEHAVIOUR_DIR:?}"/*
+
+    # download zip
+    cd "$BEHAVIOUR_DIR" || exit 1
+    wget --content-disposition "$BEHAVIOUR_URL" || exit 1
 
     # unzip it
     unzip ./*.zip

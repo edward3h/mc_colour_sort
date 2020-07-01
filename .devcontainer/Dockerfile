@@ -70,14 +70,14 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-# python pip and ruby gem are required for pre-commit support
+# python pip, ruby gem, shellcheck are required for pre-commit support
 #
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends python-pip \
        rubygems \
-       shellcheck
+       shellcheck \
+       ack
 
 
-RUN python -m pip install --upgrade pip setuptools wheel
-RUN pip install pre-commit
+RUN python -m pip install --upgrade pip setuptools wheel && pip install pre-commit

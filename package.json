@@ -13,5 +13,8 @@
   },
   "scripts": {
     "build": "babel src/main -d gen"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
   }
 }
